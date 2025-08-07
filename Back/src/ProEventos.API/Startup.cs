@@ -34,6 +34,15 @@ namespace ProEventos.API
             );
             
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
@@ -56,6 +65,8 @@ namespace ProEventos.API
 
             app.UseAuthorization();
 
+            app.UseCors("DefaultPolicy");
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
